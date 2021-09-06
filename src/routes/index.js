@@ -12,6 +12,23 @@ router.get('/add-product', (req, res) => {
     res.render('products/add-product');
 });
 
+router.post('/add-product', (req, res) => {
+    const product = new Product();
+    product.category = req.body.category_name;
+    product.name = req.body.product_name;
+    product.price = req.body.price;
+    product.cover = faker.image.image();
+
+    product.save( err => {
+        if(err) return next(err);
+        res.redirect('/add-product');
+    });
+});
+
+router.get('/products/:page', (req, res) => {
+    
+});
+
 router.get('/generate-fake-data', (req, res) => {
     for(let i = 0; i < 90; i++){
         const product = new Product();
@@ -25,5 +42,7 @@ router.get('/generate-fake-data', (req, res) => {
     }
      res.redirect('/add-product');
 });
+
+
 
 module.exports = router;
