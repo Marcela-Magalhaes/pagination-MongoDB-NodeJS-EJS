@@ -26,7 +26,28 @@ router.post('/add-product', (req, res) => {
 });
 
 router.get('/products/:page', (req, res) => {
-    
+    let perPage = 9;
+    let page = req.params.page || 1;
+
+    Product 
+    .find({})
+    .skip(perPage*(page - 1))
+    .limit(perPage)
+    .exec((err, products) => {
+        if(err) return next(err);
+
+        Product.count((err, count) => {
+            if(err) return next(err);
+            // console.log(products);
+
+            res.render('products/products', {
+                products,
+                current: page,
+                pages: Math.ceil(count / perPage)
+            });
+        });
+    });
+
 });
 
 router.get('/generate-fake-data', (req, res) => {
